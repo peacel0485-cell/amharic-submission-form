@@ -59,7 +59,7 @@ async function showDashboard() {
         adminCard.style.display = 'block';
         formCard.style.display = 'none';
         userSubmissionsCard.style.display = 'none';
-        await loadAllSubmissions();
+        switchTab('submissions'); // Load submissions by default
     } else {
         formCard.style.display = 'block';
         adminCard.style.display = 'none';
@@ -327,3 +327,165 @@ window.addEventListener('DOMContentLoaded', () => {
         showDashboard();
     }
 });
+
+
+// Tab Switching
+function switchTab(tab) {
+    // Update tab buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    // Update tab content
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    
+    if (tab === 'submissions') {
+        document.getElementById('submissionsTab').classList.add('active');
+        loadAllSubmissions();
+    } else if (tab === 'users') {
+        document.getElementById('usersTab').classList.add('active');
+        loadUsers();
+    }
+}
+
+// Load all users
+async function loadUsers() {
+    const usersList = document.getElementById('usersList');
+    
+    try {
+        const response = await fetch(`${API_URL}/users`);
+        const data = await response.json();
+        
+        if (!data.success || data.users.length === 0) {
+            usersList.innerHTML = `
+                <div style="text-align: center; padding: 60px 20px; color: var(--gray);">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">👥</div>
+                    <p style="font-size: 1.2rem;">ምንም ተጠቃሚ የለም።</p>
+                </div>
+            `;
+            return;
+        }
+
+        usersList.innerHTML = `
+            <div class="users-grid">
+                ${data.users.map(user => `
+                    <div class="user-card">
+                        <div class="user-card-header">
+                            <div class="user-avatar">${user.name.charAt(0)}</div>
+                            <div class="user-actions">
+                                <button class="btn-icon edit" onclick='editUser(${JSON.stringify(user)})' title="አርትዕ">✏️</button>
+                                <button class="btn-icon delete" onclick="deleteUser('${user.id}', '${user.username}')" title="ሰርዝ">🗑️</button>
+                            </div>
+                        </div>
+                        <div class="user-info">
+                            <h3>${user.name}</h3>
+                            <p>👤 ${user.username}</p>
+                            <p>📅 ${new Date(user.created_at).toLocaleDateString('am-ET')}</p>
+                            <span class="user-role-badge ${user.role}">${user.role === 'admin' ? '👨‍💼 አስተዳዳሪ' : '👤 ተጠቃሚ'}</span>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    } catch (error) {
+        showError('ተጠቃሚዎችን መጫን አልተቻለም።');
+    }
+}
+
+// Show add user modal
+function showAddUserModal() {
+    document.getElementById('modalTitle').textContent = 'አዲስ ተጠቃሚ ጨምር';
+    document.getElementById('userForm').reset();
+    document.getElementById('userId').value = '';
+    document.getElementById('userModal').classList.add('show');
+}
+
+// Edit user
+function editUser(user) {
+    document.getElementById('modalTitle').textContent = 'ተጠቃሚ አርትዕ';
+    document.getElementById('userId').value = user.id;
+    document.getElementById('modalUsername').value = user.username;
+    document.getElementById('modalName').value = user.name;
+    document.getElementById('modalPassword').value = '';
+    document.getElementById('modalPassword').placeholder = 'ባዶ ይተዉት ካልተቀየረ';
+    document.getElementById('modalPassword').required = false;
+    document.getElementById('modalRole').value = user.role;
+    document.getElementById('userModal').classList.add('show');
+}
+
+// Close modal
+function closeUserModal() {
+    document.getElementById('userModal').classList.remove('show');
+    document.getElementById('userForm').reset();
+}
+
+// Handle user form submission
+document.getElementById('userForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const userId = document.getElementById('userId').value;
+    const userData = {
+        username: document.getElementById('modalUsername').value,
+        name: document.getElementById('modalName').value,
+        role: document.getElementById('modalRole').value
+    };
+    
+    const password = document.getElementById('modalPassword').value;
+    if (password) {
+        userData.password = password;
+    }
+    
+    try {
+        const url = userId ? `${API_URL}/users/${userId}` : `${API_URL}/users`;
+        const method = userId ? 'PUT' : 'POST';
+        
+        const response = await fetch(url, {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userData)
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showSuccess(userId ? 'ተጠቃሚ በተሳካ ሁኔታ ተዘምኗል!' : 'ተጠቃሚ በተሳካ ሁኔታ ተጨምሯል!');
+            closeUserModal();
+            loadUsers();
+        } else {
+            showError('ስህተት ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።');
+        }
+    } catch (error) {
+        showError('ግንኙነት ስህተት። እባክዎ እንደገና ይሞክሩ።');
+    }
+});
+
+// Delete user
+async function deleteUser(userId, username) {
+    if (!confirm(`"${username}" የተባለውን ተጠቃሚ መሰረዝ ይፈልጋሉ?`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_URL}/users/${userId}`, {
+            method: 'DELETE'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showSuccess('ተጠቃሚ በተሳካ ሁኔታ ተሰርዟል!');
+            loadUsers();
+        } else {
+            showError('ስህተት ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።');
+        }
+    } catch (error) {
+        showError('ግንኙነት ስህተት። እባክዎ እንደገና ይሞክሩ።');
+    }
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('userModal');
+    if (event.target === modal) {
+        closeUserModal();
+    }
+}

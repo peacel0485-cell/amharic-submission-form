@@ -121,6 +121,83 @@ app.post('/api/replies', async (req, res) => {
   }
 });
 
+// User Management Routes (Admin only)
+
+// Get all users
+app.get('/api/users', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('users')
+      .select('id, username, name, role, created_at, updated_at')
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    
+    res.json({ success: true, users: data });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Create new user
+app.post('/api/users', async (req, res) => {
+  try {
+    const userData = req.body;
+    
+    const { data, error } = await supabase
+      .from('users')
+      .insert([userData])
+      .select()
+      .single();
+    
+    if (error) throw error;
+    
+    res.json({ success: true, user: data });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Update user
+app.put('/api/users/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userData = req.body;
+    userData.updated_at = new Date().toISOString();
+    
+    const { data, error } = await supabase
+      .from('users')
+      .update(userData)
+      .eq('id', id)
+      .select()
+      .single();
+    
+    if (error) throw error;
+    
+    res.json({ success: true, user: data });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Delete user
+app.delete('/api/users/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const { error } = await supabase
+      .from('users')
+      .delete()
+      .eq('id', id);
+    
+    if (error) throw error;
+    
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

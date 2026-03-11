@@ -41,6 +41,9 @@ INSERT INTO users (username, password, name, role) VALUES
   ('admin', 'admin123', 'አስተዳዳሪ', 'admin'),
   ('user1', 'user123', 'ተጠቃሚ 1', 'user');
 
+-- Add updated_at column for tracking changes
+ALTER TABLE users ADD COLUMN updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW();
+
 -- Enable Row Level Security
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE submissions ENABLE ROW LEVEL SECURITY;
