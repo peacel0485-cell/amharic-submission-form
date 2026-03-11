@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="am" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>መረጃ መላኪያ ቅጽ - Information Submission Portal</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>መረጃ መላኪያ ቅጽ</h1>
+            <div class="user-info" id="userInfo"></div>
+        </div>
+
+        <!-- Login Form -->
+        <div class="card" id="loginCard">
+            <h2>🔐 ግባ</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>የተጠቃሚ ስም</label>
+                    <input type="text" id="username" required placeholder="የተጠቃሚ ስም ያስገቡ" autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label>የይለፍ ቃል</label>
+                    <input type="password" id="password" required placeholder="የይለፍ ቃል ያስገቡ" autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn-submit">ግባ</button>
+                <div style="margin-top: 20px; padding: 16px; background: #f0f9ff; border-radius: 12px; font-size: 0.9rem; color: #0369a1;">
+                    <strong>Demo Accounts:</strong><br>
+                    Admin: admin / admin123<br>
+                    User: user1 / user123
+                </div>
+            </form>
+        </div>
+
+        <!-- User Submissions View -->
+        <div class="card" id="userSubmissionsCard" style="display: none;">
+            <h2>📋 የእኔ መረጃዎች</h2>
+            <div id="userSubmissionsList"></div>
+        </div>
+
+        <!-- Submission Form -->
+        <div class="card" id="formCard" style="display: none;">
+            <h2>📝 አዲስ መረጃ ላክ</h2>
+            <form id="submissionForm">
+                <div class="form-group">
+                    <label>ቀን *</label>
+                    <input type="date" id="date" required>
+                </div>
+
+                <div class="form-group">
+                    <label>ሙሉ ስም</label>
+                    <input type="text" id="fullName" placeholder="ሙሉ ስምዎን ያስገቡ">
+                </div>
+
+                <div class="address-section">
+                    <h3>አድራሻ</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>ክ/ከተማ</label>
+                            <input type="text" id="subCity" placeholder="ክፍለ ከተማ">
+                        </div>
+                        <div class="form-group">
+                            <label>ወረዳ</label>
+                            <input type="text" id="woreda" placeholder="ወረዳ">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>ቀጠና</label>
+                            <input type="text" id="ketena" placeholder="ቀጠና">
+                        </div>
+                        <div class="form-group">
+                            <label>ብሎክ</label>
+                            <input type="text" id="block" placeholder="ብሎክ">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>የቤት ቁጥር</label>
+                        <input type="text" id="houseNumber" placeholder="የቤት ቁጥር">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>ስልክ ቁጥር</label>
+                    <input type="tel" id="phone" placeholder="+251 9XX XXX XXX">
+                </div>
+
+                <div class="form-group">
+                    <label>መላክ የፈለጉትን መረጃ በግልጽ ይጻፉልን *</label>
+                    <textarea id="message" rows="6" required placeholder="መረጃዎን እዚህ ይጻፉ..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>ተያያዥ ማስረጃ</label>
+                    <input type="file" id="attachment" accept="image/*,video/*,.pdf">
+                    <small>📎 ምስል፣ ቪዲዮ ወይም PDF ፋይል ያያይዙ</small>
+                </div>
+
+                <button type="submit" class="btn-submit">ላክ</button>
+            </form>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div class="card" id="adminCard" style="display: none;">
+            <h2>👨‍💼 የአስተዳዳሪ ዳሽቦርድ</h2>
+            <div id="submissionsList"></div>
+        </div>
+
+        <button id="logoutBtn" class="btn-logout" style="display: none;">ውጣ</button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
