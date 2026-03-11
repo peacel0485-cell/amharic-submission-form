@@ -158,14 +158,19 @@ app.get('/api/users', async (req, res) => {
   try {
     const { data, error } = await supabase
       .from('users')
-      .select('id, username, name, role, created_at, updated_at')
+      .select('id, username, name, role, created_at')
       .order('created_at', { ascending: false });
     
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase error:', error);
+      throw error;
+    }
     
-    res.json({ success: true, users: data });
+    console.log('Users fetched:', data?.length || 0);
+    res.json({ success: true, users: data || [] });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error fetching users:', error);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 

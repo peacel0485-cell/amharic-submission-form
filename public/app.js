@@ -383,10 +383,19 @@ async function loadUsers() {
     const usersList = document.getElementById('usersList');
     
     try {
+        console.log('Fetching users from:', `${API_URL}/users`); // Debug log
         const response = await fetch(`${API_URL}/users`);
         const data = await response.json();
         
-        if (!data.success || data.users.length === 0) {
+        console.log('Users API response:', data); // Debug log
+        
+        if (!data.success) {
+            console.error('API error:', data.error);
+            showError('ተጠቃሚዎችን መጫን አልተቻለም: ' + (data.error || 'Unknown error'));
+            return;
+        }
+        
+        if (!data.users || data.users.length === 0) {
             usersList.innerHTML = `
                 <div style="text-align: center; padding: 60px 20px; color: var(--gray);">
                     <div style="font-size: 4rem; margin-bottom: 20px;">👥</div>
@@ -425,8 +434,8 @@ async function loadUsers() {
                         <div class="user-card-header">
                             <div class="user-avatar">${user.name.charAt(0)}</div>
                             <div class="user-actions">
-                                <button class="btn-icon edit" onclick='editUser(${JSON.stringify(user)})' title="አርትዕ">✏️</button>
-                                <button class="btn-icon delete" onclick="deleteUser('${user.id}', '${user.username}')" title="ሰርዝ">🗑️</button>
+                                <button class="btn-icon edit" onclick='editUser(${JSON.stringify(user).replace(/'/g, "&#39;")})' title="አርትዕ">✏️</button>
+                                <button class="btn-icon delete" onclick="deleteUser('${user.id}', '${user.username.replace(/'/g, "&#39;")}')" title="ሰርዝ">🗑️</button>
                             </div>
                         </div>
                         <div class="user-info">
@@ -440,7 +449,8 @@ async function loadUsers() {
             </div>
         `;
     } catch (error) {
-        showError('ተጠቃሚዎችን መጫን አልተቻለም።');
+        console.error('Error loading users:', error);
+        showError('ተጠቃሚዎችን መጫን አልተቻለም: ' + error.message);
     }
 }
 
