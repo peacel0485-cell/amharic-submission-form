@@ -102,6 +102,36 @@ app.post('/api/submissions', async (req, res) => {
   }
 });
 
+// Upload file to Supabase Storage
+app.post('/api/upload', async (req, res) => {
+  try {
+    const { fileName, fileData, fileType } = req.body;
+    
+    // Convert base64 to buffer
+    const base64Data = fileData.split(',')[1];
+    const buffer = Buffer.from(base64Data, 'base64');
+    
+    // Upload to Supabase Storage
+    const { data, error } = await supabase.storage
+      .from('attachments')
+      .upload(`${Date.now()}_${fileName}`, buffer, {
+        contentType: fileType,
+        upsert: false
+      });
+    
+    if (error) throw error;
+    
+    // Get public URL
+    const { data: urlData } = supabase.storage
+      .from('attachments')
+      .getPublicUrl(data.path);
+    
+    res.json({ success: true, url: urlData.publicUrl, path: data.path });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Create reply (admin only)
 app.post('/api/replies', async (req, res) => {
   try {

@@ -78,11 +78,41 @@ submissionForm.addEventListener('submit', async (e) => {
 
     try {
         const fileInput = document.getElementById('attachment');
-        const attachment = fileInput.files.length > 0 ? {
-            name: fileInput.files[0].name,
-            type: fileInput.files[0].type,
-            size: fileInput.files[0].size
-        } : null;
+        let attachmentUrl = null;
+        let attachmentName = null;
+        let attachmentType = null;
+        let attachmentSize = null;
+
+        // Upload file if exists
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            attachmentName = file.name;
+            attachmentType = file.type;
+            attachmentSize = file.size;
+
+            // Convert file to base64
+            const reader = new FileReader();
+            const fileData = await new Promise((resolve) => {
+                reader.onload = (e) => resolve(e.target.result);
+                reader.readAsDataURL(file);
+            });
+
+            // Upload to server
+            const uploadResponse = await fetch(`${API_URL}/upload`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    fileName: file.name,
+                    fileData: fileData,
+                    fileType: file.type
+                })
+            });
+
+            const uploadData = await uploadResponse.json();
+            if (uploadData.success) {
+                attachmentUrl = uploadData.url;
+            }
+        }
 
         const submissionData = {
             username: currentUser.username,
@@ -95,9 +125,10 @@ submissionForm.addEventListener('submit', async (e) => {
             house_number: document.getElementById('houseNumber').value,
             phone: document.getElementById('phone').value,
             message: document.getElementById('message').value,
-            attachment_name: attachment?.name,
-            attachment_type: attachment?.type,
-            attachment_size: attachment?.size
+            attachment_name: attachmentName,
+            attachment_type: attachmentType,
+            attachment_size: attachmentSize,
+            attachment_url: attachmentUrl
         };
 
         const response = await fetch(`${API_URL}/submissions`, {
@@ -171,7 +202,7 @@ async function loadAllSubmissions() {
                 ${sub.phone ? `<p><strong>ስልክ:</strong> ${sub.phone}</p>` : ''}
                 ${sub.sub_city ? `<p><strong>አድራሻ:</strong> ${sub.sub_city}, ${sub.woreda}, ${sub.ketena}</p>` : ''}
                 <p><strong>መረጃ:</strong> ${sub.message}</p>
-                ${sub.attachment_name ? `<div class="attachment-badge">📎 ${sub.attachment_name}</div>` : ''}
+                ${sub.attachment_url ? `<a href="${sub.attachment_url}" target="_blank" class="attachment-link">📎 ${sub.attachment_name} (${(sub.attachment_size / 1024).toFixed(2)} KB)</a>` : ''}
                 
                 ${reply ? `
                     <div class="reply-section">
@@ -252,7 +283,7 @@ async function loadUserSubmissions() {
                 <p><strong>የተላከበት ጊዜ:</strong> ${new Date(sub.created_at).toLocaleString('am-ET')}</p>
                 ${sub.full_name ? `<p><strong>ሙሉ ስም:</strong> ${sub.full_name}</p>` : ''}
                 <p><strong>መረጃ:</strong> ${sub.message}</p>
-                ${sub.attachment_name ? `<div class="attachment-badge">📎 ${sub.attachment_name}</div>` : ''}
+                ${sub.attachment_url ? `<a href="${sub.attachment_url}" target="_blank" class="attachment-link">📎 ${sub.attachment_name} (${(sub.attachment_size / 1024).toFixed(2)} KB)</a>` : ''}
                 
                 ${reply ? `
                     <div class="reply-section admin-reply">

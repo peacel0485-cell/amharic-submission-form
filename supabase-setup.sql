@@ -24,6 +24,7 @@ CREATE TABLE submissions (
   attachment_name TEXT,
   attachment_type TEXT,
   attachment_size INTEGER,
+  attachment_url TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
