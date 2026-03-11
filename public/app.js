@@ -194,7 +194,10 @@ async function loadAllSubmissions() {
             const reply = sub.replies && sub.replies.length > 0 ? sub.replies[0] : null;
             return `
             <div class="submission-item">
-                <h4>መረጃ #${sub.id.slice(0, 8)}</h4>
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                    <h4>መረጃ #${sub.id.slice(0, 8)}</h4>
+                    <button class="btn-icon delete" onclick="deleteSubmission('${sub.id}')" title="ሰርዝ" style="color: var(--danger);">🗑️</button>
+                </div>
                 <p><strong>ተጠቃሚ:</strong> ${sub.username}</p>
                 <p><strong>ቀን:</strong> ${sub.date}</p>
                 <p><strong>የተላከበት ጊዜ:</strong> ${new Date(sub.created_at).toLocaleString('am-ET')}</p>
@@ -550,5 +553,30 @@ window.onclick = function(event) {
     const modal = document.getElementById('userModal');
     if (event.target === modal) {
         closeUserModal();
+    }
+}
+
+
+// Delete submission (admin only)
+async function deleteSubmission(submissionId) {
+    if (!confirm('ይህን መረጃ መሰረዝ ይፈልጋሉ? ይህ ተግባር መልሰው ማግኘት አይችሉም።')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_URL}/submissions/${submissionId}`, {
+            method: 'DELETE'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showSuccess('መረጃው በተሳካ ሁኔታ ተሰርዟል!');
+            await loadAllSubmissions();
+        } else {
+            showError('ስህተት ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።');
+        }
+    } catch (error) {
+        showError('ግንኙነት ስህተት። እባክዎ እንደገና ይሞክሩ።');
     }
 }

@@ -965,3 +965,18 @@ body::before {
         white-space: nowrap;
     }
 }
+
+
+/* Delete button styling */
+.submission-item .btn-icon.delete {
+    background: rgba(239, 68, 68, 0.1);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+}
+
+.submission-item .btn-icon.delete:hover {
+    background: var(--danger);
+    color: white;
+    transform: scale(1.1);
+}

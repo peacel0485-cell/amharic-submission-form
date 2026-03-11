@@ -233,6 +233,31 @@ app.delete('/api/users/:id', async (req, res) => {
   }
 });
 
+// Delete submission (admin only)
+app.delete('/api/submissions/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // First delete associated replies
+    await supabase
+      .from('replies')
+      .delete()
+      .eq('submission_id', id);
+    
+    // Then delete the submission
+    const { error } = await supabase
+      .from('submissions')
+      .delete()
+      .eq('id', id);
+    
+    if (error) throw error;
+    
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
