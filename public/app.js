@@ -396,9 +396,31 @@ async function loadUsers() {
             return;
         }
 
-        usersList.innerHTML = `
+        const users = data.users;
+        const adminCount = users.filter(u => u.role === 'admin').length;
+        const userCount = users.filter(u => u.role === 'user').length;
+
+        // Add stats
+        const statsHTML = `
+            <div class="stats-grid" style="margin-bottom: 30px;">
+                <div class="stat-card">
+                    <h3>${users.length}</h3>
+                    <p>ጠቅላላ ተጠቃሚዎች</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                    <h3>${adminCount}</h3>
+                    <p>አስተዳዳሪዎች</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                    <h3>${userCount}</h3>
+                    <p>መደበኛ ተጠቃሚዎች</p>
+                </div>
+            </div>
+        `;
+
+        usersList.innerHTML = statsHTML + `
             <div class="users-grid">
-                ${data.users.map(user => `
+                ${users.map(user => `
                     <div class="user-card">
                         <div class="user-card-header">
                             <div class="user-avatar">${user.name.charAt(0)}</div>
