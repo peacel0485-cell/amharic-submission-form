@@ -106,30 +106,43 @@ app.post('/api/submissions', async (req, res) => {
 // Upload file to Supabase Storage
 app.post('/api/upload', async (req, res) => {
   try {
-    const { fileName, fileData, fileType } = req.body;
+    // Use multer or handle multipart form data
+    const multer = require('multer');
+    const upload = multer({ storage: multer.memoryStorage() });
     
-    // Convert base64 to buffer
-    const base64Data = fileData.split(',')[1];
-    const buffer = Buffer.from(base64Data, 'base64');
-    
-    // Upload to Supabase Storage
-    const { data, error } = await supabase.storage
-      .from('attachments')
-      .upload(`${Date.now()}_${fileName}`, buffer, {
-        contentType: fileType,
-        upsert: false
-      });
-    
-    if (error) throw error;
-    
-    // Get public URL
-    const { data: urlData } = supabase.storage
-      .from('attachments')
-      .getPublicUrl(data.path);
-    
-    res.json({ success: true, url: urlData.publicUrl, path: data.path });
+    // Handle file upload
+    upload.single('file')(req, res, async (err) => {
+      if (err) {
+        return res.status(500).json({ success: false, error: err.message });
+      }
+      
+      const file = req.file;
+      const fileName = req.body.fileName || file.originalname;
+      
+      if (!file) {
+        return res.status(400).json({ success: false, error: 'No file uploaded' });
+      }
+      
+      // Upload to Supabase Storage
+      const { data, error } = await supabase.storage
+        .from('attachments')
+        .upload(fileName, file.buffer, {
+          contentType: file.mimetype,
+          upsert: false
+        });
+      
+      if (error) throw error;
+      
+      // Get public URL
+      const { data: urlData } = supabase.storage
+        .from('attachments')
+        .getPublicUrl(data.path);
+      
+      res.json({ success: true, url: urlData.publicUrl, path: data.path });
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Upload error:', error);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 

@@ -83,34 +83,45 @@ submissionForm.addEventListener('submit', async (e) => {
         let attachmentType = null;
         let attachmentSize = null;
 
-        // Upload file if exists
+        // Upload file directly to Supabase Storage if exists
         if (fileInput.files.length > 0) {
             const file = fileInput.files[0];
+            
+            // Check file size (max 10MB)
+            if (file.size > 10 * 1024 * 1024) {
+                showError('ፋይሉ በጣም ትልቅ ነው። እባክዎ ከ10MB በታች ያለ ፋይል ይምረጡ።');
+                submitBtn.innerHTML = 'ላክ';
+                submitBtn.disabled = false;
+                return;
+            }
+            
             attachmentName = file.name;
             attachmentType = file.type;
             attachmentSize = file.size;
 
-            // Convert file to base64
-            const reader = new FileReader();
-            const fileData = await new Promise((resolve) => {
-                reader.onload = (e) => resolve(e.target.result);
-                reader.readAsDataURL(file);
-            });
+            // Create a unique filename
+            const timestamp = Date.now();
+            const fileName = `${timestamp}_${file.name}`;
+            
+            // Create FormData for file upload
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('fileName', fileName);
 
             // Upload to server
             const uploadResponse = await fetch(`${API_URL}/upload`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    fileName: file.name,
-                    fileData: fileData,
-                    fileType: file.type
-                })
+                body: formData
             });
 
             const uploadData = await uploadResponse.json();
             if (uploadData.success) {
                 attachmentUrl = uploadData.url;
+            } else {
+                showError('ፋይል መስቀል አልተቻለም። እባክዎ እንደገና ይሞክሩ።');
+                submitBtn.innerHTML = 'ላክ';
+                submitBtn.disabled = false;
+                return;
             }
         }
 
@@ -147,6 +158,7 @@ submissionForm.addEventListener('submit', async (e) => {
             showError('ስህተት ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።');
         }
     } catch (error) {
+        console.error('Submission error:', error);
         showError('ግንኙነት ስህተት። እባክዎ እንደገና ይሞክሩ።');
     } finally {
         submitBtn.innerHTML = 'ላክ';
