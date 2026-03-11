@@ -559,7 +559,7 @@ window.onclick = function(event) {
 
 // Delete submission (admin only)
 async function deleteSubmission(submissionId) {
-    if (!confirm('ይህን መረጃ መሰረዝ ይፈልጋሉ? ይህ ተግባር መልሰው ማግኘት አይችሉም።')) {
+    if (!confirm('ይህን መረጃ ከእርስዎ እይታ መደበቅ ይፈልጋሉ? (ተጠቃሚው አሁንም ማየት ይችላል)')) {
         return;
     }
     
@@ -571,7 +571,7 @@ async function deleteSubmission(submissionId) {
         const data = await response.json();
         
         if (data.success) {
-            showSuccess('መረጃው በተሳካ ሁኔታ ተሰርዟል!');
+            showSuccess('መረጃው ከእይታ ተደብቋል!');
             await loadAllSubmissions();
         } else {
             showError('ስህተት ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።');

@@ -54,6 +54,7 @@ app.get('/api/submissions', async (req, res) => {
     const { data, error } = await supabase
       .from('submissions')
       .select('*, replies(*)')
+      .is('deleted_at', null) // Only show non-deleted submissions
       .order('created_at', { ascending: false });
     
     if (error) throw error;
@@ -233,21 +234,15 @@ app.delete('/api/users/:id', async (req, res) => {
   }
 });
 
-// Delete submission (admin only)
+// Delete submission (admin only) - Soft delete
 app.delete('/api/submissions/:id', async (req, res) => {
   try {
     const { id } = req.params;
     
-    // First delete associated replies
-    await supabase
-      .from('replies')
-      .delete()
-      .eq('submission_id', id);
-    
-    // Then delete the submission
+    // Soft delete: just mark as deleted with timestamp
     const { error } = await supabase
       .from('submissions')
-      .delete()
+      .update({ deleted_at: new Date().toISOString() })
       .eq('id', id);
     
     if (error) throw error;
