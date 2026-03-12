@@ -307,7 +307,10 @@ async function loadUserSubmissions() {
             const reply = sub.replies && sub.replies.length > 0 ? sub.replies[0] : null;
             return `
             <div class="submission-item">
-                <h4>መረጃ #${sub.id.slice(0, 8)}</h4>
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                    <h4>መረጃ #${sub.id.slice(0, 8)}</h4>
+                    <button class="btn-icon delete" onclick="deleteUserSubmission('${sub.id}')" title="ሰርዝ" style="color: var(--danger);">🗑️</button>
+                </div>
                 <p><strong>ቀን:</strong> ${sub.date}</p>
                 <p><strong>የተላከበት ጊዜ:</strong> ${new Date(sub.created_at).toLocaleString('am-ET')}</p>
                 ${sub.full_name ? `<p><strong>ሙሉ ስም:</strong> ${sub.full_name}</p>` : ''}
@@ -327,6 +330,34 @@ async function loadUserSubmissions() {
         `}).join('');
     } catch (error) {
         showError('መረጃዎችን መጫን አልተቻለም።');
+    }
+}
+
+// Delete user's own submission
+async function deleteUserSubmission(submissionId) {
+    const currentLang = localStorage.getItem('preferredLanguage') || 'am';
+    const confirmMsg = translations[currentLang]['delete-confirm'];
+    const successMsg = translations[currentLang]['delete-success'];
+    
+    if (!confirm(confirmMsg)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_URL}/submissions/${submissionId}/user/${currentUser.username}`, {
+            method: 'DELETE'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showSuccess(successMsg);
+            await loadUserSubmissions();
+        } else {
+            showError('ስህተት ተፈጥሯል። እባክዎ እንደገና ይሞክሩ।');
+        }
+    } catch (error) {
+        showError('ግንኙነት ስህተት። እባክዎ እንደገና ይሞክሩ።');
     }
 }
 
@@ -660,7 +691,9 @@ const translations = {
         'role-admin': 'አስተዳዳሪ',
         'cancel-btn': 'ሰርዝ',
         'save-btn': 'አስቀምጥ',
-        'logout-btn': 'ውጣ'
+        'logout-btn': 'ውጣ',
+        'delete-confirm': 'ይህን መረጃ መሰረዝ ይፈልጋሉ? ይህ ድርጊት መልሰው ማግኘት አይችሉም።',
+        'delete-success': 'መረጃው በተሳካ ሁኔታ ተሰርዟል!'
     },
     om: {
         'main-title': '🛡️ Sirna Odeeffannoo Nageenyaa',
@@ -702,7 +735,9 @@ const translations = {
         'role-admin': 'Bulchaa',
         'cancel-btn': 'Haqii',
         'save-btn': 'Olkaa\'i',
-        'logout-btn': 'Ba\'i'
+        'logout-btn': 'Ba\'i',
+        'delete-confirm': 'Odeeffannoo kana haquu barbaaddaa? Tarkaanfiin kun deebi\'amee hin argamu.',
+        'delete-success': 'Odeeffannoon milkaa\'inaan haqame!'
     },
     en: {
         'main-title': '🛡️ Security Information Submission System',
@@ -744,7 +779,9 @@ const translations = {
         'role-admin': 'Admin',
         'cancel-btn': 'Cancel',
         'save-btn': 'Save',
-        'logout-btn': 'Logout'
+        'logout-btn': 'Logout',
+        'delete-confirm': 'Do you want to delete this information? This action cannot be undone.',
+        'delete-success': 'Information deleted successfully!'
     }
 };
 

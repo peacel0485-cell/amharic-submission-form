@@ -266,6 +266,38 @@ app.delete('/api/submissions/:id', async (req, res) => {
   }
 });
 
+// Delete user's own submission
+app.delete('/api/submissions/:id/user/:username', async (req, res) => {
+  try {
+    const { id, username } = req.params;
+    
+    // Verify the submission belongs to the user
+    const { data: submission, error: fetchError } = await supabase
+      .from('submissions')
+      .select('username')
+      .eq('id', id)
+      .single();
+    
+    if (fetchError) throw fetchError;
+    
+    if (submission.username !== username) {
+      return res.status(403).json({ success: false, error: 'Unauthorized' });
+    }
+    
+    // Hard delete for user's own submissions
+    const { error } = await supabase
+      .from('submissions')
+      .delete()
+      .eq('id', id);
+    
+    if (error) throw error;
+    
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
