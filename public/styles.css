@@ -250,14 +250,15 @@ body::after {
     padding-right: 45px;
 }
 
-.form-group select optgroup {
-    font-weight: 600;
-    color: var(--primary);
-    font-style: normal;
-}
-
 .form-group select option {
     padding: 10px;
+}
+
+.form-group select option:disabled {
+    font-weight: 700;
+    color: var(--primary);
+    background: #f1f5f9;
+    font-size: 0.95rem;
 }
 
 .form-group textarea {

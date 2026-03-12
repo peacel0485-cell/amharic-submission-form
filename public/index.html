@@ -54,24 +54,21 @@
 
                 <div class="form-group">
                     <label data-i18n="info-type-label">የመረጃ አይነት *</label>
-                    <select id="infoType" required data-i18n-placeholder="info-type-placeholder">
+                    <select id="infoType" required>
                         <option value="" data-i18n="select-option">-- ይምረጡ --</option>
                         <option value="ስርቆት" data-i18n="info-type-theft">ስርቆት (ንጥቂያ)</option>
-                        <optgroup label="ፀረ ሰላም ሀይል" data-i18n="info-type-antipeace">
-                            <option value="ሸኔ" data-i18n="info-type-shene">ሸኔ</option>
-                            <option value="ፋኖ" data-i18n="info-type-fano">ፋኖ</option>
-                            <option value="የውጪ ዜጋ" data-i18n="info-type-foreign">የውጪ ዜጋ</option>
-                        </optgroup>
+                        <option value="" disabled data-i18n="info-type-antipeace">ፀረ ሰላም ሀይል</option>
+                        <option value="ሸኔ" data-i18n="info-type-shene">&nbsp;&nbsp;&nbsp;• ሸኔ</option>
+                        <option value="ፋኖ" data-i18n="info-type-fano">&nbsp;&nbsp;&nbsp;• ፋኖ</option>
+                        <option value="የውጪ ዜጋ" data-i18n="info-type-foreign">&nbsp;&nbsp;&nbsp;• የውጪ ዜጋ</option>
                         <option value="የተፈጥሮ ወይም ሰው ሰራሽ አደጋ" data-i18n="info-type-disaster">የተፈጥሮ ወይም ሰው ሰራሽ አደጋ</option>
-                        <optgroup label="ውንብድና ወንጀል" data-i18n="info-type-violence">
-                            <option value="ግድያ" data-i18n="info-type-murder">ግድያ</option>
-                            <option value="እገታ" data-i18n="info-type-kidnap">እገታ</option>
-                            <option value="የተደራጀ ስርቆት" data-i18n="info-type-organized">የተደራጀ ስርቆት</option>
-                        </optgroup>
-                        <optgroup label="የኢኮኖሚ አሻጥር" data-i18n="info-type-economic">
-                            <option value="ዋጋ ንረት" data-i18n="info-type-inflation">ዋጋ ንረት (ጭማሪ)</option>
-                            <option value="ኮንትሮባንድ" data-i18n="info-type-contraband">ኮንትሮባንድ</option>
-                        </optgroup>
+                        <option value="" disabled data-i18n="info-type-violence">ውንብድና ወንጀል</option>
+                        <option value="ግድያ" data-i18n="info-type-murder">&nbsp;&nbsp;&nbsp;• ግድያ</option>
+                        <option value="እገታ" data-i18n="info-type-kidnap">&nbsp;&nbsp;&nbsp;• እገታ</option>
+                        <option value="የተደራጀ ስርቆት" data-i18n="info-type-organized">&nbsp;&nbsp;&nbsp;• የተደራጀ ስርቆት</option>
+                        <option value="" disabled data-i18n="info-type-economic">የኢኮኖሚ አሻጥር</option>
+                        <option value="ዋጋ ንረት" data-i18n="info-type-inflation">&nbsp;&nbsp;&nbsp;• ዋጋ ንረት (ጭማሪ)</option>
+                        <option value="ኮንትሮባንድ" data-i18n="info-type-contraband">&nbsp;&nbsp;&nbsp;• ኮንትሮባንድ</option>
                     </select>
                 </div>
 
