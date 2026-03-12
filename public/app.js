@@ -434,9 +434,160 @@ function switchTab(tab) {
     if (tab === 'submissions') {
         document.getElementById('submissionsTab').classList.add('active');
         loadAllSubmissions();
+    } else if (tab === 'analytics') {
+        document.getElementById('analyticsTab').classList.add('active');
+        loadAnalytics();
     } else if (tab === 'users') {
         document.getElementById('usersTab').classList.add('active');
         loadUsers();
+    }
+}
+
+// Load analytics and reports
+async function loadAnalytics() {
+    const analyticsContent = document.getElementById('analyticsContent');
+    
+    try {
+        const response = await fetch(`${API_URL}/submissions`);
+        const data = await response.json();
+        
+        if (!data.success || data.submissions.length === 0) {
+            analyticsContent.innerHTML = `
+                <div style="text-align: center; padding: 60px 20px; color: var(--gray);">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">📊</div>
+                    <p style="font-size: 1.2rem;">ምንም መረጃ የለም።</p>
+                </div>
+            `;
+            return;
+        }
+
+        const submissions = data.submissions;
+        
+        // Count by info type
+        const infoTypeCounts = {};
+        submissions.forEach(sub => {
+            if (sub.info_type) {
+                infoTypeCounts[sub.info_type] = (infoTypeCounts[sub.info_type] || 0) + 1;
+            }
+        });
+        
+        // Sort by count descending
+        const sortedTypes = Object.entries(infoTypeCounts)
+            .sort((a, b) => b[1] - a[1]);
+        
+        // Calculate percentages
+        const total = submissions.length;
+        
+        // Get date range
+        const dates = submissions.map(s => new Date(s.created_at));
+        const minDate = new Date(Math.min(...dates));
+        const maxDate = new Date(Math.max(...dates));
+        
+        // Count by date (last 7 days)
+        const last7Days = {};
+        for (let i = 6; i >= 0; i--) {
+            const date = new Date();
+            date.setDate(date.getDate() - i);
+            const dateStr = date.toISOString().split('T')[0];
+            last7Days[dateStr] = 0;
+        }
+        
+        submissions.forEach(sub => {
+            const dateStr = sub.created_at.split('T')[0];
+            if (last7Days.hasOwnProperty(dateStr)) {
+                last7Days[dateStr]++;
+            }
+        });
+
+        analyticsContent.innerHTML = `
+            <div class="analytics-summary">
+                <div class="stat-card" style="background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);">
+                    <h3>${total}</h3>
+                    <p>ጠቅላላ ሪፖርቶች</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                    <h3>${submissions.filter(s => s.attachment_url).length}</h3>
+                    <p>ከማስረጃ ጋር</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                    <h3>${new Set(submissions.map(s => s.username)).size}</h3>
+                    <p>ተጠቃሚዎች</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);">
+                    <h3>${sortedTypes.length}</h3>
+                    <p>የመረጃ አይነቶች</p>
+                </div>
+            </div>
+            
+            <div class="analytics-section">
+                <h3>📈 የመረጃ አይነት ስታቲስቲክስ</h3>
+                <div class="info-type-stats">
+                    ${sortedTypes.map(([type, count], index) => {
+                        const percentage = ((count / total) * 100).toFixed(1);
+                        const colors = [
+                            'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                            'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                            'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                            'linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)',
+                            'linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)',
+                            'linear-gradient(135deg, #ec4899 0%, #db2777 100%)',
+                            'linear-gradient(135deg, #14b8a6 0%, #0d9488 100%)',
+                            'linear-gradient(135deg, #f97316 0%, #ea580c 100%)'
+                        ];
+                        const color = colors[index % colors.length];
+                        
+                        return `
+                            <div class="info-type-item">
+                                <div class="info-type-header">
+                                    <span class="info-type-name">${index + 1}. ${type || 'ያልተገለጸ'}</span>
+                                    <span class="info-type-count">${count} ሪፖርቶች (${percentage}%)</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${percentage}%; background: ${color};"></div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+            
+            <div class="analytics-section">
+                <h3>📅 የመጨረሻዎቹ 7 ቀናት አዝማሚያ</h3>
+                <div class="timeline-chart">
+                    ${Object.entries(last7Days).map(([date, count]) => {
+                        const maxCount = Math.max(...Object.values(last7Days));
+                        const height = maxCount > 0 ? (count / maxCount) * 100 : 0;
+                        const dateObj = new Date(date);
+                        const dayName = dateObj.toLocaleDateString('am-ET', { weekday: 'short' });
+                        
+                        return `
+                            <div class="timeline-bar">
+                                <div class="bar-container">
+                                    <div class="bar-fill" style="height: ${height}%;" title="${count} ሪፖርቶች"></div>
+                                </div>
+                                <div class="bar-label">${dayName}</div>
+                                <div class="bar-count">${count}</div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+            
+            <div class="analytics-section">
+                <h3>📍 የመረጃ ጊዜ ክልል</h3>
+                <p style="color: var(--gray); margin-top: 10px;">
+                    <strong>ከ:</strong> ${minDate.toLocaleDateString('am-ET')} 
+                    <strong>እስከ:</strong> ${maxDate.toLocaleDateString('am-ET')}
+                </p>
+            </div>
+        `;
+    } catch (error) {
+        console.error('Error loading analytics:', error);
+        analyticsContent.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--danger);">
+                <p>ስታቲስቲክስ መጫን አልተቻለም።</p>
+            </div>
+        `;
     }
 }
 
@@ -700,6 +851,7 @@ const translations = {
         'attachment-hint': '📎 ምስል፣ ቪዲዮ ወይም PDF ፋይል ያያይዙ',
         'submit-btn': 'ላክ',
         'admin-reports': '🛡️ የፀጥታ ሪፖርቶች',
+        'admin-analytics': '📊 ሪፖርት እና ትንተና',
         'admin-users': '👥 የተጠቃሚዎች አስተዳደር',
         'add-user-btn': '➕ አዲስ ተጠቃሚ ጨምር',
         'add-user-title': 'አዲስ ተጠቃሚ ጨምር',
@@ -759,6 +911,7 @@ const translations = {
         'attachment-hint': '📎 Suuraa, viidiyoo ykn faayilii PDF maxxansi',
         'submit-btn': 'Ergi',
         'admin-reports': '🛡️ Gabaasota Nageenyaa',
+        'admin-analytics': '📊 Gabaasa fi Xiinxala',
         'admin-users': '👥 Bulchiinsa Fayyadamtoota',
         'add-user-btn': '➕ Fayyadamaa Haaraa Dabali',
         'add-user-title': 'Fayyadamaa Haaraa Dabali',
@@ -818,6 +971,7 @@ const translations = {
         'attachment-hint': '📎 Attach image, video or PDF file',
         'submit-btn': 'Submit',
         'admin-reports': '🛡️ Security Reports',
+        'admin-analytics': '📊 Reports & Analytics',
         'admin-users': '👥 User Management',
         'add-user-btn': '➕ Add New User',
         'add-user-title': 'Add New User',
