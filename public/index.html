@@ -10,13 +10,14 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>መረጃ መላኪያ ቅጽ</h1>
+            <h1>🛡️ የደህንነት መረጃ ማስገቢያ ስርዓት</h1>
+            <p class="subtitle">Security Information Submission System</p>
             <div class="user-info" id="userInfo"></div>
         </div>
 
         <!-- Login Form -->
         <div class="card" id="loginCard">
-            <h2>🔐 ግባ</h2>
+            <h2>የደህንነት መግቢያ</h2>
             <form id="loginForm">
                 <div class="form-group">
                     <label>የተጠቃሚ ስም</label>
@@ -32,13 +33,13 @@
 
         <!-- User Submissions View -->
         <div class="card" id="userSubmissionsCard" style="display: none;">
-            <h2>📋 የእኔ መረጃዎች</h2>
+            <h2>የእኔ የደህንነት ሪፖርቶች</h2>
             <div id="userSubmissionsList"></div>
         </div>
 
         <!-- Submission Form -->
         <div class="card" id="formCard" style="display: none;">
-            <h2>📝 አዲስ መረጃ ላክ</h2>
+            <h2>የደህንነት መረጃ ማስገቢያ</h2>
             <form id="submissionForm">
                 <div class="form-group">
                     <label>ቀን *</label>
@@ -101,12 +102,12 @@
         <!-- Admin Dashboard -->
         <div class="card" id="adminCard" style="display: none;">
             <div class="admin-tabs">
-                <button class="tab-btn active" onclick="switchTab('submissions')">📋 መረጃዎች</button>
-                <button class="tab-btn" onclick="switchTab('users')">👥 ተጠቃሚዎች</button>
+                <button class="tab-btn active" onclick="switchTab('submissions')">🛡️ የደህንነት ሪፖርቶች</button>
+                <button class="tab-btn" onclick="switchTab('users')">👥 የተጠቃሚዎች አስተዳደር</button>
             </div>
             
             <div id="submissionsTab" class="tab-content active">
-                <h2>📋 የተላኩ መረጃዎች</h2>
+                <h2>የደህንነት ሪፖርቶች</h2>
                 <div id="submissionsList"></div>
             </div>
             
