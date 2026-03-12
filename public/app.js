@@ -616,3 +616,173 @@ function toggleContent(contentId) {
         contentDiv.style.display = 'none';
     }
 }
+
+
+// Language translations
+const translations = {
+    am: {
+        'main-title': '🛡️ የደህንነት መረጃ ማስገቢያ ስርዓት',
+        'subtitle': 'Security Information Submission System',
+        'login-title': 'የደህንነት መግቢያ',
+        'username-label': 'የተጠቃሚ ስም',
+        'username-placeholder': 'የተጠቃሚ ስም ያስገቡ',
+        'password-label': 'የይለፍ ቃል',
+        'password-placeholder': 'የይለፍ ቃል ያስገቡ',
+        'login-btn': 'ግባ',
+        'my-reports': 'የእኔ የደህንነት ሪፖርቶች',
+        'form-title': 'የደህንነት መረጃ ማስገቢያ',
+        'date-label': 'ቀን *',
+        'fullname-label': 'ሙሉ ስም',
+        'fullname-placeholder': 'ሙሉ ስምዎን ያስገቡ',
+        'address-title': 'አድራሻ',
+        'subcity-label': 'ክ/ከተማ',
+        'subcity-placeholder': 'ክፍለ ከተማ',
+        'woreda-label': 'ወረዳ',
+        'woreda-placeholder': 'ወረዳ',
+        'ketena-label': 'ቀጠና',
+        'ketena-placeholder': 'ቀጠና',
+        'block-label': 'ብሎክ',
+        'block-placeholder': 'ብሎክ',
+        'house-label': 'የቤት ቁጥር',
+        'house-placeholder': 'የቤት ቁጥር',
+        'phone-label': 'ስልክ ቁጥር',
+        'message-label': 'መላክ የፈለጉትን መረጃ በግልጽ ይጻፉልን *',
+        'message-placeholder': 'መረጃዎን እዚህ ይጻፉ...',
+        'attachment-label': 'ተያያዥ ማስረጃ',
+        'attachment-hint': '📎 ምስል፣ ቪዲዮ ወይም PDF ፋይል ያያይዙ',
+        'submit-btn': 'ላክ',
+        'admin-reports': '🛡️ የደህንነት ሪፖርቶች',
+        'admin-users': '👥 የተጠቃሚዎች አስተዳደር',
+        'add-user-btn': '➕ አዲስ ተጠቃሚ ጨምር',
+        'add-user-title': 'አዲስ ተጠቃሚ ጨምር',
+        'role-label': 'ሚና *',
+        'role-user': 'ተጠቃሚ',
+        'role-admin': 'አስተዳዳሪ',
+        'cancel-btn': 'ሰርዝ',
+        'save-btn': 'አስቀምጥ',
+        'logout-btn': 'ውጣ'
+    },
+    om: {
+        'main-title': '🛡️ Sirna Odeeffannoo Nageenyaa',
+        'subtitle': 'Security Information Submission System',
+        'login-title': 'Seensa Nageenyaa',
+        'username-label': 'Maqaa Fayyadamaa',
+        'username-placeholder': 'Maqaa fayyadamaa galchi',
+        'password-label': 'Jecha Icciitii',
+        'password-placeholder': 'Jecha icciitii galchi',
+        'login-btn': 'Seeni',
+        'my-reports': 'Gabaasota Nageenyaa Koo',
+        'form-title': 'Odeeffannoo Nageenyaa Galchuu',
+        'date-label': 'Guyyaa *',
+        'fullname-label': 'Maqaa Guutuu',
+        'fullname-placeholder': 'Maqaa guutuu kee galchi',
+        'address-title': 'Teessoo',
+        'subcity-label': 'Magaalaa Xiqqaa',
+        'subcity-placeholder': 'Magaalaa xiqqaa',
+        'woreda-label': 'Aanaa',
+        'woreda-placeholder': 'Aanaa',
+        'ketena-label': 'Gandaa',
+        'ketena-placeholder': 'Gandaa',
+        'block-label': 'Bulooka',
+        'block-placeholder': 'Bulooka',
+        'house-label': 'Lakkoofsa Manaa',
+        'house-placeholder': 'Lakkoofsa manaa',
+        'phone-label': 'Lakkoofsa Bilbilaa',
+        'message-label': 'Odeeffannoo erguu barbaaddu ifatti barreessi *',
+        'message-placeholder': 'Odeeffannoo kee asitti barreessi...',
+        'attachment-label': 'Ragaa Maxxanfamaa',
+        'attachment-hint': '📎 Suuraa, viidiyoo ykn faayilii PDF maxxansi',
+        'submit-btn': 'Ergi',
+        'admin-reports': '🛡️ Gabaasota Nageenyaa',
+        'admin-users': '👥 Bulchiinsa Fayyadamtoota',
+        'add-user-btn': '➕ Fayyadamaa Haaraa Dabali',
+        'add-user-title': 'Fayyadamaa Haaraa Dabali',
+        'role-label': 'Gahee *',
+        'role-user': 'Fayyadamaa',
+        'role-admin': 'Bulchaa',
+        'cancel-btn': 'Haqii',
+        'save-btn': 'Olkaa\'i',
+        'logout-btn': 'Ba\'i'
+    },
+    en: {
+        'main-title': '🛡️ Security Information Submission System',
+        'subtitle': 'Security Information Submission System',
+        'login-title': 'Security Login',
+        'username-label': 'Username',
+        'username-placeholder': 'Enter username',
+        'password-label': 'Password',
+        'password-placeholder': 'Enter password',
+        'login-btn': 'Login',
+        'my-reports': 'My Security Reports',
+        'form-title': 'Security Information Submission',
+        'date-label': 'Date *',
+        'fullname-label': 'Full Name',
+        'fullname-placeholder': 'Enter your full name',
+        'address-title': 'Address',
+        'subcity-label': 'Sub-City',
+        'subcity-placeholder': 'Sub-city',
+        'woreda-label': 'Woreda',
+        'woreda-placeholder': 'Woreda',
+        'ketena-label': 'Ketena',
+        'ketena-placeholder': 'Ketena',
+        'block-label': 'Block',
+        'block-placeholder': 'Block',
+        'house-label': 'House Number',
+        'house-placeholder': 'House number',
+        'phone-label': 'Phone Number',
+        'message-label': 'Write your information clearly *',
+        'message-placeholder': 'Write your information here...',
+        'attachment-label': 'Attachment Evidence',
+        'attachment-hint': '📎 Attach image, video or PDF file',
+        'submit-btn': 'Submit',
+        'admin-reports': '🛡️ Security Reports',
+        'admin-users': '👥 User Management',
+        'add-user-btn': '➕ Add New User',
+        'add-user-title': 'Add New User',
+        'role-label': 'Role *',
+        'role-user': 'User',
+        'role-admin': 'Admin',
+        'cancel-btn': 'Cancel',
+        'save-btn': 'Save',
+        'logout-btn': 'Logout'
+    }
+};
+
+// Change language function
+function changeLanguage(lang) {
+    // Save language preference
+    localStorage.setItem('preferredLanguage', lang);
+    
+    // Update active button
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-lang') === lang) {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Update all elements with data-i18n attribute
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+            element.textContent = translations[lang][key];
+        }
+    });
+    
+    // Update placeholders
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+        const key = element.getAttribute('data-i18n-placeholder');
+        if (translations[lang] && translations[lang][key]) {
+            element.placeholder = translations[lang][key];
+        }
+    });
+    
+    // Update HTML lang attribute
+    document.documentElement.lang = lang;
+}
+
+// Initialize language on page load
+window.addEventListener('DOMContentLoaded', () => {
+    const savedLang = localStorage.getItem('preferredLanguage') || 'am';
+    changeLanguage(savedLang);
+});

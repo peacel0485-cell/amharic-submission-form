@@ -10,111 +10,117 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🛡️ የደህንነት መረጃ ማስገቢያ ስርዓት</h1>
-            <p class="subtitle">Security Information Submission System</p>
+            <img src="logo.jpeg" alt="Organization Logo" class="logo">
+            <h1 id="mainTitle" data-i18n="main-title">🛡️ የደህንነት መረጃ ማስገቢያ ስርዓት</h1>
+            <p class="subtitle" id="subtitle" data-i18n="subtitle">Security Information Submission System</p>
+            <div class="language-selector">
+                <button class="lang-btn active" onclick="changeLanguage('am')" data-lang="am">አማርኛ</button>
+                <button class="lang-btn" onclick="changeLanguage('om')" data-lang="om">Afaan Oromoo</button>
+                <button class="lang-btn" onclick="changeLanguage('en')" data-lang="en">English</button>
+            </div>
             <div class="user-info" id="userInfo"></div>
         </div>
 
         <!-- Login Form -->
         <div class="card" id="loginCard">
-            <h2>የደህንነት መግቢያ</h2>
+            <h2 data-i18n="login-title">የደህንነት መግቢያ</h2>
             <form id="loginForm">
                 <div class="form-group">
-                    <label>የተጠቃሚ ስም</label>
-                    <input type="text" id="username" required placeholder="የተጠቃሚ ስም ያስገቡ" autocomplete="username">
+                    <label data-i18n="username-label">የተጠቃሚ ስም</label>
+                    <input type="text" id="username" required data-i18n-placeholder="username-placeholder" placeholder="የተጠቃሚ ስም ያስገቡ" autocomplete="username">
                 </div>
                 <div class="form-group">
-                    <label>የይለፍ ቃል</label>
-                    <input type="password" id="password" required placeholder="የይለፍ ቃል ያስገቡ" autocomplete="current-password">
+                    <label data-i18n="password-label">የይለፍ ቃል</label>
+                    <input type="password" id="password" required data-i18n-placeholder="password-placeholder" placeholder="የይለፍ ቃል ያስገቡ" autocomplete="current-password">
                 </div>
-                <button type="submit" class="btn-submit">ግባ</button>
+                <button type="submit" class="btn-submit" data-i18n="login-btn">ግባ</button>
             </form>
         </div>
 
         <!-- User Submissions View -->
         <div class="card" id="userSubmissionsCard" style="display: none;">
-            <h2>የእኔ የደህንነት ሪፖርቶች</h2>
+            <h2 data-i18n="my-reports">የእኔ የደህንነት ሪፖርቶች</h2>
             <div id="userSubmissionsList"></div>
         </div>
 
         <!-- Submission Form -->
         <div class="card" id="formCard" style="display: none;">
-            <h2>የደህንነት መረጃ ማስገቢያ</h2>
+            <h2 data-i18n="form-title">የደህንነት መረጃ ማስገቢያ</h2>
             <form id="submissionForm">
                 <div class="form-group">
-                    <label>ቀን *</label>
+                    <label data-i18n="date-label">ቀን *</label>
                     <input type="date" id="date" required>
                 </div>
 
                 <div class="form-group">
-                    <label>ሙሉ ስም</label>
-                    <input type="text" id="fullName" placeholder="ሙሉ ስምዎን ያስገቡ">
+                    <label data-i18n="fullname-label">ሙሉ ስም</label>
+                    <input type="text" id="fullName" data-i18n-placeholder="fullname-placeholder" placeholder="ሙሉ ስምዎን ያስገቡ">
                 </div>
 
                 <div class="address-section">
-                    <h3>አድራሻ</h3>
+                    <h3 data-i18n="address-title">አድራሻ</h3>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>ክ/ከተማ</label>
-                            <input type="text" id="subCity" placeholder="ክፍለ ከተማ">
+                            <label data-i18n="subcity-label">ክ/ከተማ</label>
+                            <input type="text" id="subCity" data-i18n-placeholder="subcity-placeholder" placeholder="ክፍለ ከተማ">
                         </div>
                         <div class="form-group">
-                            <label>ወረዳ</label>
-                            <input type="text" id="woreda" placeholder="ወረዳ">
+                            <label data-i18n="woreda-label">ወረዳ</label>
+                            <input type="text" id="woreda" data-i18n-placeholder="woreda-placeholder" placeholder="ወረዳ">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>ቀጠና</label>
-                            <input type="text" id="ketena" placeholder="ቀጠና">
+                            <label data-i18n="ketena-label">ቀጠና</label>
+                            <input type="text" id="ketena" data-i18n-placeholder="ketena-placeholder" placeholder="ቀጠና">
                         </div>
                         <div class="form-group">
-                            <label>ብሎክ</label>
-                            <input type="text" id="block" placeholder="ብሎክ">
+                            <label data-i18n="block-label">ብሎክ</label>
+                            <input type="text" id="block" data-i18n-placeholder="block-placeholder" placeholder="ብሎክ">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>የቤት ቁጥር</label>
-                        <input type="text" id="houseNumber" placeholder="የቤት ቁጥር">
+                        <label data-i18n="house-label">የቤት ቁጥር</label>
+                        <input type="text" id="houseNumber" data-i18n-placeholder="house-placeholder" placeholder="የቤት ቁጥር">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>ስልክ ቁጥር</label>
+                    <label data-i18n="phone-label">ስልክ ቁጥር</label>
                     <input type="tel" id="phone" placeholder="+251 9XX XXX XXX">
                 </div>
 
                 <div class="form-group">
-                    <label>መላክ የፈለጉትን መረጃ በግልጽ ይጻፉልን *</label>
-                    <textarea id="message" rows="6" required placeholder="መረጃዎን እዚህ ይጻፉ..."></textarea>
+                    <label data-i18n="message-label">መላክ የፈለጉትን መረጃ በግልጽ ይጻፉልን *</label>
+                    <textarea id="message" rows="6" required data-i18n-placeholder="message-placeholder" placeholder="መረጃዎን እዚህ ይጻፉ..."></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label>ተያያዥ ማስረጃ</label>
+                    <label data-i18n="attachment-label">ተያያዥ ማስረጃ</label>
                     <input type="file" id="attachment" accept="image/*,video/*,.pdf">
-                    <small>📎 ምስል፣ ቪዲዮ ወይም PDF ፋይል ያያይዙ</small>
+                    <small data-i18n="attachment-hint">📎 ምስል፣ ቪዲዮ ወይም PDF ፋይል ያያይዙ</small>
                 </div>
 
-                <button type="submit" class="btn-submit">ላክ</button>
+                <button type="submit" class="btn-submit" data-i18n="submit-btn">ላክ</button>
             </form>
         </div>
 
         <!-- Admin Dashboard -->
         <div class="card" id="adminCard" style="display: none;">
             <div class="admin-tabs">
-                <button class="tab-btn active" onclick="switchTab('submissions')">🛡️ የደህንነት ሪፖርቶች</button>
-                <button class="tab-btn" onclick="switchTab('users')">👥 የተጠቃሚዎች አስተዳደር</button>
+                <button class="tab-btn active" onclick="switchTab('submissions')" data-i18n="admin-reports">🛡️ የደህንነት ሪፖርቶች</button>
+                <button class="tab-btn" onclick="switchTab('users')" data-i18n="admin-users">👥 የተጠቃሚዎች አስተዳደር</button>
             </div>
             
             <div id="submissionsTab" class="tab-content active">
-                <h2>የደህንነት ሪፖርቶች</h2>
+                <h2 data-i18n="admin-reports">የደህንነት ሪፖርቶች</h2>
                 <div id="submissionsList"></div>
             </div>
             
             <div id="usersTab" class="tab-content">
                 <div class="users-header">
-                    <h2>👥 የተጠቃሚዎች አስተዳደር</h2>
-                    <button class="btn-add-user" onclick="showAddUserModal()">➕ አዲስ ተጠቃሚ ጨምር</button>
+                    <h2 data-i18n="admin-users">👥 የተጠቃሚዎች አስተዳደር</h2>
+                    <button class="btn-add-user" onclick="showAddUserModal()" data-i18n="add-user-btn">➕ አዲስ ተጠቃሚ ጨምር</button>
                 </div>
                 <div id="usersList"></div>
             </div>
@@ -124,37 +130,37 @@
         <div id="userModal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeUserModal()">&times;</span>
-                <h2 id="modalTitle">አዲስ ተጠቃሚ ጨምር</h2>
+                <h2 id="modalTitle" data-i18n="add-user-title">አዲስ ተጠቃሚ ጨምር</h2>
                 <form id="userForm">
                     <input type="hidden" id="userId">
                     <div class="form-group">
-                        <label>የተጠቃሚ ስም *</label>
+                        <label data-i18n="username-label">የተጠቃሚ ስም *</label>
                         <input type="text" id="modalUsername" required>
                     </div>
                     <div class="form-group">
-                        <label>ሙሉ ስም *</label>
+                        <label data-i18n="fullname-label">ሙሉ ስም *</label>
                         <input type="text" id="modalName" required>
                     </div>
                     <div class="form-group">
-                        <label>የይለፍ ቃል *</label>
+                        <label data-i18n="password-label">የይለፍ ቃል *</label>
                         <input type="password" id="modalPassword" required>
                     </div>
                     <div class="form-group">
-                        <label>ሚና *</label>
+                        <label data-i18n="role-label">ሚና *</label>
                         <select id="modalRole" required>
-                            <option value="user">ተጠቃሚ</option>
-                            <option value="admin">አስተዳዳሪ</option>
+                            <option value="user" data-i18n="role-user">ተጠቃሚ</option>
+                            <option value="admin" data-i18n="role-admin">አስተዳዳሪ</option>
                         </select>
                     </div>
                     <div class="modal-actions">
-                        <button type="button" class="btn-cancel" onclick="closeUserModal()">ሰርዝ</button>
-                        <button type="submit" class="btn-save">አስቀምጥ</button>
+                        <button type="button" class="btn-cancel" onclick="closeUserModal()" data-i18n="cancel-btn">ሰርዝ</button>
+                        <button type="submit" class="btn-save" data-i18n="save-btn">አስቀምጥ</button>
                     </div>
                 </form>
             </div>
         </div>
 
-        <button id="logoutBtn" class="btn-logout" style="display: none;">ውጣ</button>
+        <button id="logoutBtn" class="btn-logout" style="display: none;" data-i18n="logout-btn">ውጣ</button>
     </div>
 
     <script src="app.js"></script>

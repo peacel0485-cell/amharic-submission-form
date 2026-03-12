@@ -1051,3 +1051,69 @@ body::after {
     color: white;
     transform: scale(1.1);
 }
+
+
+/* Logo styling */
+.logo {
+    max-width: 120px;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+/* Language selector styling */
+.language-selector {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.lang-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Noto Sans Ethiopic', 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.lang-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+}
+
+.lang-btn.active {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border-color: var(--primary-light);
+    box-shadow: 0 4px 15px rgba(30, 64, 175, 0.4);
+}
+
+@media (max-width: 768px) {
+    .logo {
+        max-width: 100px;
+    }
+    
+    .language-selector {
+        gap: 8px;
+    }
+    
+    .lang-btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+}
