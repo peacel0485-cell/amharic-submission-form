@@ -11,7 +11,7 @@
     <div class="container">
         <div class="header">
             <img src="logo.jpeg" alt="Organization Logo" class="logo">
-            <h1 id="mainTitle" data-i18n="main-title">🛡️ የደህንነት መረጃ ማስገቢያ ስርዓት</h1>
+            <h1 id="mainTitle" data-i18n="main-title">🛡️ የፀጥታ መረጃ ማስገቢያ ስርዓት</h1>
             <p class="subtitle" id="subtitle" data-i18n="subtitle">Security Information Submission System</p>
             <div class="language-selector">
                 <button class="lang-btn active" onclick="changeLanguage('am')" data-lang="am">አማርኛ</button>
@@ -23,7 +23,7 @@
 
         <!-- Login Form -->
         <div class="card" id="loginCard">
-            <h2 data-i18n="login-title">የደህንነት መግቢያ</h2>
+            <h2 data-i18n="login-title">የፀጥታ መግቢያ</h2>
             <form id="loginForm">
                 <div class="form-group">
                     <label data-i18n="username-label">የተጠቃሚ ስም</label>
@@ -39,13 +39,13 @@
 
         <!-- User Submissions View -->
         <div class="card" id="userSubmissionsCard" style="display: none;">
-            <h2 data-i18n="my-reports">የእኔ የደህንነት ሪፖርቶች</h2>
+            <h2 data-i18n="my-reports">የእኔ የፀጥታ ሪፖርቶች</h2>
             <div id="userSubmissionsList"></div>
         </div>
 
         <!-- Submission Form -->
         <div class="card" id="formCard" style="display: none;">
-            <h2 data-i18n="form-title">የደህንነት መረጃ ማስገቢያ</h2>
+            <h2 data-i18n="form-title">የፀጥታ መረጃ ማስገቢያ</h2>
             <form id="submissionForm">
                 <div class="form-group">
                     <label data-i18n="date-label">ቀን *</label>
@@ -108,12 +108,12 @@
         <!-- Admin Dashboard -->
         <div class="card" id="adminCard" style="display: none;">
             <div class="admin-tabs">
-                <button class="tab-btn active" onclick="switchTab('submissions')" data-i18n="admin-reports">🛡️ የደህንነት ሪፖርቶች</button>
+                <button class="tab-btn active" onclick="switchTab('submissions')" data-i18n="admin-reports">🛡️ የፀጥታ ሪፖርቶች</button>
                 <button class="tab-btn" onclick="switchTab('users')" data-i18n="admin-users">👥 የተጠቃሚዎች አስተዳደር</button>
             </div>
             
             <div id="submissionsTab" class="tab-content active">
-                <h2 data-i18n="admin-reports">የደህንነት ሪፖርቶች</h2>
+                <h2 data-i18n="admin-reports">የፀጥታ ሪፖርቶች</h2>
                 <div id="submissionsList"></div>
             </div>
             
