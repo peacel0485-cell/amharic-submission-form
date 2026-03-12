@@ -216,7 +216,13 @@ async function loadAllSubmissions() {
                 ${sub.full_name ? `<p><strong>ሙሉ ስም:</strong> ${sub.full_name}</p>` : ''}
                 ${sub.phone ? `<p><strong>ስልክ:</strong> ${sub.phone}</p>` : ''}
                 ${sub.sub_city ? `<p><strong>አድራሻ:</strong> ${sub.sub_city}, ${sub.woreda}, ${sub.ketena}</p>` : ''}
-                <p><strong>መረጃ:</strong> ${sub.message}</p>
+                <div style="display: flex; align-items: center; gap: 8px; margin: 8px 0;">
+                    <strong>መረጃ:</strong>
+                    <button class="btn-icon" onclick="toggleContent('content-${sub.id}')" title="መረጃ ይመልከቱ" style="font-size: 1.2rem;">👁️</button>
+                </div>
+                <div id="content-${sub.id}" style="display: none; padding: 12px; background: var(--light-bg); border-radius: 8px; margin: 8px 0;">
+                    <p>${sub.message}</p>
+                </div>
                 ${sub.attachment_url ? `<a href="${sub.attachment_url}" target="_blank" class="attachment-link">📎 ${sub.attachment_name} (${(sub.attachment_size / 1024).toFixed(2)} KB)</a>` : ''}
                 
                 ${reply ? `
@@ -590,5 +596,15 @@ async function deleteSubmission(submissionId) {
         }
     } catch (error) {
         showError('ግንኙነት ስህተት። እባክዎ እንደገና ይሞክሩ።');
+    }
+}
+
+// Toggle content visibility
+function toggleContent(contentId) {
+    const contentDiv = document.getElementById(contentId);
+    if (contentDiv.style.display === 'none') {
+        contentDiv.style.display = 'block';
+    } else {
+        contentDiv.style.display = 'none';
     }
 }
